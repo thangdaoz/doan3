@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4ea6c5f3e4d34cd792dece0210d63754" Name="Diagram1">
+        <EntityTypeShape EntityType="Stationery_managementModel.category" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Stationery_managementModel.company" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Stationery_managementModel.order" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Stationery_managementModel.orders_item" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Stationery_managementModel.product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Stationery_managementModel.role" Width="1.5" PointX="0.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="Stationery_managementModel.store" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Stationery_managementModel.sysdiagram" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Stationery_managementModel.user" Width="1.5" PointX="0.75" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Stationery_managementModel.users_roles" Width="1.5" PointX="3" PointY="15.75" IsExpanded="true" />
+        <AssociationConnector Association="Stationery_managementModel.FK__products__catego__66603565" ManuallyRouted="false" />
+        <AssociationConnector Association="Stationery_managementModel.FK__orders__company___5224328E" ManuallyRouted="false" />
+        <AssociationConnector Association="Stationery_managementModel.FK__orders__user_id__02FC7413" ManuallyRouted="false" />
+        <AssociationConnector Association="Stationery_managementModel.FK__orders_it__order__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="Stationery_managementModel.FK__orders_it__produ__02084FDA" ManuallyRouted="false" />
+        <AssociationConnector Association="Stationery_managementModel.FK__products__store___6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="Stationery_managementModel.FK__users_rol__roles__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="Stationery_managementModel.FK__users_rol__users__01142BA1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
