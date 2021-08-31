@@ -28,7 +28,7 @@ namespace STATIONERY_MANAGE.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult index([Bind(Include = "service_charge_value,vat_charge_value,adress,phone,country,messege")] company company)
+        public ActionResult index([Bind(Include = "id,service_charge_value,vat_charge_value,address,phone,country,message")] company company)
         {
             if (ModelState.IsValid)
             {

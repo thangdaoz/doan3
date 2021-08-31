@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using STATIONERY_MANAGE.Models;
@@ -55,7 +56,17 @@ namespace STATIONERY_MANAGE.Controllers
         // GET: User/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            user user = db.users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(user);
         }
 
         // POST: User/Edit/5
@@ -75,9 +86,18 @@ namespace STATIONERY_MANAGE.Controllers
         }
 
         // GET: User/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            user user = db.users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
         }
 
         // POST: User/Delete/5

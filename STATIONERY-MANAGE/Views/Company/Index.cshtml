@@ -45,42 +45,53 @@
                     @using (Html.BeginForm(""))
                     {
                         @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.id)
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="service_charge_value">Charge Amount (%)</label>
+                                @Html.EditorFor(model => model.service_charge_value, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.service_charge_value, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <label for="vat_charge_value">Vat Charge (%)</label>
+                                @Html.EditorFor(model => model.vat_charge_value, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.vat_charge_value, "", new { @class = "text-danger" })
 
-                     <div class="box-body">
-                        <div class="form-group">
-                            <label for="service_charge_value">Charge Amount (%)</label>
-                            @Html.EditorFor(model => model.service_charge_value, new { htmlAttributes = new { @class = "form-control" } })
-                        </div>
-                        <div class="form-group">
-                            <label for="vat_charge_value">Vat Charge (%)</label>
-                            @Html.EditorFor(model => model.vat_charge_value, new { htmlAttributes = new { @class = "form-control" } })
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Address</label>
-                            @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone</label>
-                            @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
-                        </div>
-                        <div class="form-group">
-                            <label for="country">Country</label>
-                            @Html.EditorFor(model => model.country, new { htmlAttributes = new { @class = "form-control" } })
-                        </div>
-                        <div class="form-group">
-                            <label for="permission">Message</label>
-                            @Html.EditorFor(model => model.message, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                @Html.EditorFor(model => model.country, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+
+
+                            </div>
+                            <div class="form-group">
+                                <label for="permission">Message</label>
+                                @Html.EditorFor(model => model.message, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.message, "", new { @class = "text-danger" })
+
+
+                            </div>
+
 
                         </div>
 
+                        <!-- /.box-body -->
 
-                     </div>
-
-                    <!-- /.box-body -->
-
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
                     }
 
                 </div>
