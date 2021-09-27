@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<STATIONERY_MANAGE.Models.order>
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -35,7 +36,7 @@
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
 
-                <a href="<?php echo base_url('orders/create') ?>" class="btn btn-primary">Add Order</a>
+                <a href="@Url.Action("create", "Order")" class="btn btn-primary">Add Order</a>
                 <br /> <br />
 
                 <div class="box">
@@ -58,7 +59,45 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr id="">
 
+                                        <td valign="top" colspan="1">
+                                            @Html.DisplayFor(modelItem => item.id);
+                                        </td>
+
+                                        <td valign="top" colspan="1">
+                                            @Html.DisplayFor(modelItem => item.customer_name);
+                                        </td>
+
+
+                                        <td valign='top' colspan="1">
+                                            @Html.DisplayFor(modelItem => item.customer_phone);
+                                        </td>
+                                        <td valign="top" colspan="1">
+                                            @Html.DisplayFor(modelItem => item.date_time);
+                                        </td>
+                                        <td valign="top" colspan="1">
+                                            @Html.DisplayFor(modelItem => item.orders_item.Count);
+                                        </td>
+                                        <td valign="top" colspan="1">
+                                            @Html.DisplayFor(modelItem => item.net_amount);
+                                        </td>
+                                        <td valign="top" colspan="1">
+                                            @Html.DisplayFor(modelItem => item.paid_status);
+                                        </td>
+                                        <td valign="top" colspan="1">
+
+                                            <button type='button' id='edit_store' class='btn btn-default' onClick="location.href ='@Url.Action("edit", "User", new { id = item.id })'"><i class='fa fa-edit'></i></button>
+                                        </td>
+
+
+
+                                    </tr>
+                                }
+                            </tbody>
                         </table>
                     </div>
                     <!-- /.box-body -->
@@ -101,63 +140,62 @@
 
 
 <script type="text/javascript">
-var manageTable;
-var base_url = "<?php echo base_url(); ?>";
+    var manageTable;
+    var base_url = "<?php echo base_url(); ?>";
 
-$(document).ready(function() {
+    $(document).ready(function () {
 
-  $("#mainOrdersNav").addClass('active');
-  $("#manageOrdersNav").addClass('active');
+        $("#mainOrdersNav").addClass('active');
+        $("#manageOrdersNav").addClass('active');
 
-  // initialize the datatable
-  manageTable = $('#manageTable').DataTable({
-    'ajax': base_url + 'orders/fetchOrdersData',
-    'order': []
-  });
+        // initialize the datatable
+        manageTable = $('#manageTable').DataTable({
+            'ajax': base_url + 'orders/fetchOrdersData',
+            'order': []
+        });
 
-});
-
-// remove functions
-function removeFunc(id)
-{
-  if(id) {
-    $("#removeForm").on('submit', function() {
-
-      var form = $(this);
-
-      // remove the text-danger
-      $(".text-danger").remove();
-
-      $.ajax({
-        url: form.attr('action'),
-        type: form.attr('method'),
-        data: { order_id:id },
-        dataType: 'json',
-        success:function(response) {
-
-          manageTable.ajax.reload(null, false);
-
-          if(response.success === true) {
-            $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-              '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>'+response.messages+
-            '</div>');
-
-            // hide the modal
-            $("#removeModal").modal('hide');
-
-          } else {
-
-            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-              '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>'+response.messages+
-            '</div>');
-          }
-        }
-      });
-
-      return false;
     });
-  }
-}</script>
+
+    // remove functions
+    function removeFunc(id) {
+        if (id) {
+            $("#removeForm").on('submit', function () {
+
+                var form = $(this);
+
+                // remove the text-danger
+                $(".text-danger").remove();
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: { order_id: id },
+                    dataType: 'json',
+                    success: function (response) {
+
+                        manageTable.ajax.reload(null, false);
+
+                        if (response.success === true) {
+                            $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>' + response.messages +
+                                '</div>');
+
+                            // hide the modal
+                            $("#removeModal").modal('hide');
+
+                        } else {
+
+                            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                                '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>' + response.messages +
+                                '</div>');
+                        }
+                    }
+                });
+
+                return false;
+            });
+        }
+    }</script>
 

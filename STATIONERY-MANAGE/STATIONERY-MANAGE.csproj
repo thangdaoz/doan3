@@ -166,7 +166,6 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -182,6 +181,7 @@
     <Compile Include="Models\company.cs">
       <DependentUpon>Stationery.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\feeview.cs" />
     <Compile Include="Models\order.cs">
       <DependentUpon>Stationery.tt</DependentUpon>
     </Compile>
@@ -189,6 +189,10 @@
       <DependentUpon>Stationery.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\product.cs">
+      <DependentUpon>Stationery.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductViewmodel.cs" />
+    <Compile Include="Models\product_image.cs">
       <DependentUpon>Stationery.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\role.cs">
@@ -221,6 +225,7 @@
     <Compile Include="Models\users_roles.cs">
       <DependentUpon>Stationery.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -7553,12 +7558,9 @@
     <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_Layout1.cshtml" />
-    <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Category\Index.cshtml" />
     <Content Include="Views\Company\Index.cshtml" />
     <Content Include="Views\Orders\Index.cshtml" />
@@ -7568,21 +7570,19 @@
     <Content Include="Views\Product\edit.cshtml" />
     <Content Include="Views\Product\create.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
-    <Content Include="Views\Role\Edit.cshtml" />
-    <Content Include="Views\Role\Create.cshtml" />
-    <Content Include="Views\Role\Delete.cshtml" />
     <Content Include="Views\Store\Index.cshtml" />
-    <Content Include="Views\Category\Create.cshtml" />
-    <Content Include="Views\Category\Edit.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
-    <Content Include="Views\User\Delete.cshtml" />
-    <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\User\profile.cshtml" />
+    <Content Include="Views\User\login.cshtml" />
     <Content Include="Views\User\setting.cshtml" />
+    <Content Include="Views\Product\addimage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Dropdown\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

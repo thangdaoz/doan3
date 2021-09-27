@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<STATIONERY_MANAGE.Models.store>
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -28,22 +29,17 @@
 
                 <div id="messages"></div>
 
-                <?php if($this->session->flashdata('success')): ?>
-                <div class="alert alert-success alert-dismissible" role="alert">
+                <div id="sucess" class="alert alert-success alert-dismissible hide" role="alert">
+                    successfull
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <?php echo $this->session->flashdata('success'); ?>
                 </div>
-                <?php elseif($this->session->flashdata('error')): ?>
-                <div class="alert alert-error alert-dismissible" role="alert">
+                <div id="fail"  class="alert alert-error alert-dismissible hide" role="alert">
+                    fail
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <?php echo $this->session->flashdata('error'); ?>
                 </div>
-                <?php endif; ?>
 
-                <?php if(in_array('createStore', $user_permission)): ?>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add Store</button>
                 <br /> <br />
-                <?php endif; ?>
 
                 <div class="box">
                     <div class="box-header">
@@ -56,11 +52,12 @@
                                 <tr>
                                     <th>Store Name</th>
                                     <th>Status</th>
-                                    <?php if(in_array('updateStore', $user_permission) || in_array('deleteStore', $user_permission)): ?>
                                     <th>Action</th>
-                                    <?php endif; ?>
                                 </tr>
                             </thead>
+                            <tbody id="show_data">
+                               
+                            </tbody>
 
                         </table>
                     </div>
@@ -77,7 +74,6 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-<?php if(in_array('createStore', $user_permission)): ?>
 <!-- create brand modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="addModal">
     <div class="modal-dialog" role="document">
@@ -87,13 +83,15 @@
                 <h4 class="modal-title">Add Store</h4>
             </div>
 
-            <form role="form" action="<?php echo base_url('stores/create') ?>" method="post" id="createForm">
+            <form role="form" >
 
                 <div class="modal-body">
 
                     <div class="form-group">
                         <label for="brand_name">Store Name</label>
                         <input type="text" class="form-control" id="store_name" name="store_name" placeholder="Enter store name" autocomplete="off">
+                        <input type="hidden" id="store_id1" value="0" /> 
+                        <span class="error text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="active">Status</label>
@@ -106,7 +104,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" id="add_store" class="btn btn-primary">Save changes</button>
                 </div>
 
             </form>
@@ -124,7 +122,7 @@
                 <h4 class="modal-title">Edit Store</h4>
             </div>
 
-            <form role="form" action="<?php echo base_url('stores/update') ?>" method="post" id="updateForm">
+            <form role="form" id="updateForm">
 
                 <div class="modal-body">
                     <div id="messages"></div>
@@ -132,6 +130,8 @@
                     <div class="form-group">
                         <label for="edit_brand_name">Store Name</label>
                         <input type="text" class="form-control" id="edit_store_name" name="edit_store_name" placeholder="Enter store name" autocomplete="off">
+                        <input type="hidden" id="store_id2" value="0" />
+                        <span class="error text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="edit_active">Status</label>
@@ -144,7 +144,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" id="editstore" class="btn btn-primary">Save changes</button>
                 </div>
 
             </form>
@@ -153,9 +153,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php endif; ?>
-
-<?php if(in_array('deleteStore', $user_permission)): ?>
 <!-- remove brand modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="removeModal">
     <div class="modal-dialog" role="document">
@@ -165,13 +162,13 @@
                 <h4 class="modal-title">Remove Store</h4>
             </div>
 
-            <form role="form" action="<?php echo base_url('stores/remove') ?>" method="post" id="removeForm">
+            <form role="form" action="" method="post" id="removeForm">
                 <div class="modal-body">
                     <p>Do you really want to remove?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" id="removestore" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
 
@@ -179,194 +176,175 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php endif; ?>
 
 
 
-<script type="text/javascript">
-var manageTable;
 
-$(document).ready(function() {
+    <script type="text/javascript">
+            
+        $(document).ready(function () {
+            LoadData();
 
-  $("#storeNav").addClass('active');
-
-  // initialize the datatable
-  manageTable = $('#manageTable').DataTable({
-    'ajax': 'fetchStoresData',
-    'order': []
-  });
-
-  // submit the create from
-  $("#createForm").unbind('submit').on('submit', function() {
-    var form = $(this);
-
-    // remove the text-danger
-    $(".text-danger").remove();
-
-    $.ajax({
-      url: form.attr('action'),
-      type: form.attr('method'),
-      data: form.serialize(), // /converting the form data into array and sending it to server
-      dataType: 'json',
-      success:function(response) {
-
-        manageTable.ajax.reload(null, false);
-
-        if(response.success === true) {
-          $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">'+
-            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-            '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>'+response.messages+
-          '</div>');
-
-
-          // hide the modal
-          $("#addModal").modal('hide');
-
-          // reset the form
-          $("#createForm")[0].reset();
-          $("#createForm .form-group").removeClass('has-error').removeClass('has-success');
-
-        } else {
-
-          if(response.messages instanceof Object) {
-            $.each(response.messages, function(index, value) {
-              var id = $("#"+index);
-
-              id.closest('.form-group')
-              .removeClass('has-error')
-              .removeClass('has-success')
-              .addClass(value.length > 0 ? 'has-error' : 'has-success');
-
-              id.after(value);
-
+            $('#add_store').click(function () {
+                var name = $('#store_name').val();
+                var active = $('#active').val();
+                var model = {
+                    name: name,
+                    active: active
+                };
+                if (Validate()) {
+                    $.ajax(
+                        {
+                            url: '/Store/createorder',
+                            type: 'POST',
+                            data: model,
+                            success: function (res) {
+                                if (res.success) {
+                                    LoadData();
+                                    $('#addModal').modal('hide');
+                                    $('#sucess').removeClass('hide').addClass('show');
+                                }
+                            }
+                        });
+                }
             });
-          } else {
-            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-              '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>'+response.messages+
-            '</div>');
-          }
-        }
-      }
-    });
 
-    return false;
-  });
+            $('body').on('click', '#edit_store', function () {
+                var id = $(this).data('id');
+                GetdatabyId(id);
+            });
 
-});
-
-// edit function
-function editFunc(id)
-{
-  $.ajax({
-    url: 'fetchStoresDataById/'+id,
-    type: 'post',
-    dataType: 'json',
-    success:function(response) {
-
-      $("#edit_store_name").val(response.name);
-      $("#edit_active").val(response.active);
-
-      // submit the edit from
-      $("#updateForm").unbind('submit').bind('submit', function() {
-        var form = $(this);
-
-        // remove the text-danger
-        $(".text-danger").remove();
-
-        $.ajax({
-          url: form.attr('action') + '/' + id,
-          type: form.attr('method'),
-          data: form.serialize(), // /converting the form data into array and sending it to server
-          dataType: 'json',
-          success:function(response) {
-
-            manageTable.ajax.reload(null, false);
-
-            if(response.success === true) {
-              $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">'+
-                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-                '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>'+response.messages+
-              '</div>');
-
-
-              // hide the modal
-              $("#editModal").modal('hide');
-              // reset the form
-              $("#updateForm .form-group").removeClass('has-error').removeClass('has-success');
-
-            } else {
-
-              if(response.messages instanceof Object) {
-                $.each(response.messages, function(index, value) {
-                  var id = $("#"+index);
-
-                  id.closest('.form-group')
-                  .removeClass('has-error')
-                  .removeClass('has-success')
-                  .addClass(value.length > 0 ? 'has-error' : 'has-success');
-
-                  id.after(value);
-
+            $('body').on('click', '#remove_store', function () {
+                var id = $(this).data('id');
+                $('#removeModal').modal('show');
+                $('#removestore').click(function () {
+                    Delete(id);
                 });
-              } else {
-                $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">'+
-                  '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-                  '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>'+response.messages+
-                '</div>');
-              }
-            }
-          }
+            });
+            $('#editstore').click(function () {
+                var name = $('#edit_store_name').val();
+                var active = $('#edit_active').val();
+                var id = $('#store_id2').val();
+                var model = {
+                    id: id,
+                    name: name,
+                    active: active
+                    
+                };
+                if (Validate_edit()) {
+                    $.ajax(
+                        {
+                            url: '/Store/update',
+                            type: 'POST',
+                            data: model,
+                            success: function (res) {
+                                if (res.success) {
+                                    LoadData();
+                                    $('#editModal').modal('hide');
+                                    $('#sucess').removeClass('hide').addClass('show');
+                                }
+                            }
+                        });
+                }
+            });
+
+
         });
 
-        return false;
-      });
+        function LoadData() {
+            $.ajax({
+                url: '/Store/Getdata',
+                type: 'GET',
+                success: function (res) {
+                    if (res.TotalItems > 0) {
+                        var items = res.Data;
+                        var html = "";
+                        for (let i = 0; i < res.TotalItems; i++) {
+                            html += "<tr id='trow_" + items[i].id  +  "'>";
 
-    }
-  });
-}
+                            html += "<td valign='top' colspan='1' > " + items[i].name + "</td>";
+                            if (items[i].active == 1) {
+                                html += "<td valign='top' colspan='1' >active</td>";
+                            }
+                            else {
+                                html += "<td valign='top' colspan='1' >inactive</td>";
+                            }
 
-// remove functions
-function removeFunc(id)
-{
-  if(id) {
-    $("#removeForm").on('submit', function() {
+                            html += "<td valign='top' colspan='1' ><button type='button' data-id='" + items[i].id + "' id='edit_store' class='btn btn-default'><i class='fa fa-edit'></i></button><button type = 'button' id='remove_store'  data-id='" + items[i].id + "' class='btn btn-default'> <i class='fa fa-remove'></i></button ></td>";
 
-      var form = $(this);
-
-      // remove the text-danger
-      $(".text-danger").remove();
-
-      $.ajax({
-        url: form.attr('action'),
-        type: form.attr('method'),
-        data: { store_id:id },
-        dataType: 'json',
-        success:function(response) {
-
-          manageTable.ajax.reload(null, false);
-
-          if(response.success === true) {
-            $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-              '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>'+response.messages+
-            '</div>');
-
-            // hide the modal
-            $("#removeModal").modal('hide');
-
-          } else {
-
-            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-              '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>'+response.messages+
-            '</div>');
-          }
+                            html += "</tr>";
+                        }
+                        $('#show_data').html(html);
+                    }
+                }
+            });
         }
-      });
+        function GetdatabyId(id) {
+            $.ajax({
+                url: '/Store/Getid',
+                type: 'GET',
+                data: { id: id },
+                success: function (res) {
+                    if (res.data != null) {
+                        $('#edit_store_name').val(res.data.name);
 
-      return false;
-    });
-  }
-}</script>
+                        $('#edit_active').val(res.data.active);
+                        $('#store_id2').val(res.data.id);
+                        $('#editModal').modal('show');
+                    }
+                }
+            });
+        }
+
+        function Validate() {
+
+            var check = false;
+
+            var name = $('#store_name').val();
+            if (name === '') {
+                $('#store_name').next().html('you have not input value');
+                check = false;
+            } else {
+                $('#store_name').next().html('');
+                check = true;
+            }
+            return check
+        }
+
+        function Validate_edit() {
+
+            var check = false;
+
+            var name = $('#edit_store_name').val();
+            if (name === '') {
+                $('#edit_store_name').next().html('you have not input value');
+                check = false;
+            } else {
+                $('#edit_store_name').next().html('');
+                check = true;
+            }
+            return check
+        }
+
+        function Delete(id) {
+            $.ajax({
+                url: '/Store/Delete',
+                type: 'POST',
+                data: { id: id }
+                
+
+            }).done(function (res) {
+                if (res.success) {
+                $('#trow_' + id).remove();
+                $('#removeModal').modal('hide');
+                $('#sucess').removeClass('hide').addClass('show');
+            }
+                }).fail(function (err) {
+                    $('#fail').removeClass('hide').addClass('show');
+                    console.log('loi');
+
+                });
+        }
+       
+    </script>
 

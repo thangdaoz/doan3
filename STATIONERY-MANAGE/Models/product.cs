@@ -18,6 +18,7 @@ namespace STATIONERY_MANAGE.Models
         public product()
         {
             this.orders_item = new HashSet<orders_item>();
+            this.product_image = new HashSet<product_image>();
         }
     
         public int id { get; set; }
@@ -35,5 +36,7 @@ namespace STATIONERY_MANAGE.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<orders_item> orders_item { get; set; }
         public virtual store store { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<product_image> product_image { get; set; }
     }
 }

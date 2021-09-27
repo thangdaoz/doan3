@@ -15,16 +15,15 @@ namespace STATIONERY_MANAGE.Controllers
         Stationery_managementEntities db = new Stationery_managementEntities();
         public ActionResult Index(int? id )
         {
-            if (Session["idUser"] != null)
-            {
+            
+            
                 company company = db.companies.Find(id = 1);
                 return View(company);
-            }
             
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+           
+           
+            
+            
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

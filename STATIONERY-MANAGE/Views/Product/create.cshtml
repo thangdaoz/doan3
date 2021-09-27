@@ -1,4 +1,4 @@
-﻿
+﻿@model STATIONERY_MANAGE.Models.product
 @{
     ViewBag.Title = "create";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -45,102 +45,110 @@
                         <h3 class="box-title">Add Product</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form role="form" action="<?php base_url('users/create') ?>" method="post" enctype="multipart/form-data">
-                        <div class="box-body">
+                    @using (Html.BeginForm("create", "Product", FormMethod.Post, new { enctype = "multipart/form-data" } ))
+                    {
+                    @Html.AntiForgeryToken()
 
-                            <?php echo validation_errors(); ?>
+                    
+                <div class="box-body">
+                   
 
-                            <div class="form-group">
+                    <div class="form-group">
 
-                                <label for="product_image">Image</label>
-                                <div class="kv-avatar">
-                                    <div class="file-loading">
-                                        <input id="product_image" name="product_image" type="file">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="product_name">Product name</label>
-                                <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" autocomplete="off" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="sku">SKU</label>
-                                <input type="text" class="form-control" id="sku" name="sku" placeholder="Enter sku" autocomplete="off" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="price">Price</label>
-                                <input type="text" class="form-control" id="price" name="price" placeholder="Enter price" autocomplete="off" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="qty">Qty</label>
-                                <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" autocomplete="off" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="description">Description</label>
-                                <textarea type="text" class="form-control" id="description" name="description" placeholder="Enter
-                  description" autocomplete="off">
-                  </textarea>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="groups"><?php echo $v['attribute_data']['name'] ?></label>
-                                <select class="form-control select_group" id="attributes_value_id" name="attributes_value_id[]" multiple="multiple">
-
-                                    <option value=""</option>
-
-                                </select>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="brands">Brands</label>
-                                <select class="form-control select_group" id="brands" name="brands[]" multiple="multiple">
-
-                                    <option value=""></option>
-
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="category">Category</label>
-                                <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
-
-                                    <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
-
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="store">Store</label>
-                                <select class="form-control select_group" id="store" name="store">
-                                    <?php foreach ($stores as $k => $v): ?>
-                                    <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="store">Availability</label>
-                                <select class="form-control" id="availability" name="availability">
-                                    <option value="1">Yes</option>
-                                    <option value="2">No</option>
-                                </select>
-                            </div>
-
+                        <label for="product_image">Image</label>
+                        <div class="kv-avatar">
+                                <input id="product_image" name="images" type="file">
+                                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                            
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="product_name">Product name</label>
+                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @id = "product_name", @name = "product_name", @placeholder = "Enter product name", autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sku">SKU</label>
+                        @Html.EditorFor(model => model.sku, new { htmlAttributes = new { @class = "form-control", @id = "sku", @name = "sku", @placeholder = "Enter sku", autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.sku, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control", @id = "price", @name = "price", @placeholder = "Enter sku", autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="qty">Qty</label>
+                        @Html.EditorFor(model => model.qty, new { htmlAttributes = new { @class = "form-control", @id = "qty", @name = "qty", @placeholder = "Enter sku", autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.qty, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+
+                        @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control", @id = "description", @name = "description", @placeholder = "Enter description", autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                    </div>
+
+
+
+
+
+
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select class="form-control select_group" id="category_id" name="category_id">
+
+                            <option value=""></option>
+                            @foreach (var item in ViewBag.dropdownlist1)
+                            {
+                                <option value="@item.id">@item.name</option>
+
+                            }
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="store">Store</label>
+                        <select class="form-control select_group" id="store_id" name="store_id">
+                            <option value=""></option>
+                            @foreach (var item in ViewBag.dropdownlist2)
+                            {
+                                <option value="@item.id">@item.name</option>
+
+                            }
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="store">Availability</label>
+                        <select class="form-control" id="availability" name="availability">
+                            <option value="1">Yes</option>
+                            <option value="2">No</option>
+                        </select>
+                    </div>
+
+                </div>
                         <!-- /.box-body -->
 
                         <div class="box-footer">
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                             <a href="" class="btn btn-warning">Back</a>
                         </div>
-                    </form>
+                    
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @User.Identity.Name
+                    }
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
@@ -156,33 +164,7 @@
 <!-- /.content-wrapper -->
 
 <script type="text/javascript">
-$(document).ready(function() {
-    $(".select_group").select2();
-    $("#description").wysihtml5();
 
-    $("#mainProductNav").addClass('active');
-    $("#addProductNav").addClass('active');
-
-    var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
-        'onclick="alert(\'Call your custom code here.\')">' +
-        '<i class="glyphicon glyphicon-tag"></i>' +
-        '</button>';
-    $("#product_image").fileinput({
-        overwriteInitial: true,
-        maxFileSize: 1500,
-        showClose: false,
-        showCaption: false,
-        browseLabel: '',
-        removeLabel: '',
-        browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',
-        removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
-        removeTitle: 'Cancel or reset changes',
-        elErrorContainer: '#kv-avatar-errors-1',
-        msgErrorClass: 'alert alert-block alert-danger',
-        // defaultPreviewContent: '<img src="/uploads/default_avatar_male.jpg" alt="Your Avatar">',
-        layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
-        allowedFileExtensions: ["jpg", "png", "gif"]
-    });
-
-  });</script>
+    
+  </script>
 

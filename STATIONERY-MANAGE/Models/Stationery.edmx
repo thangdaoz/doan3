@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Stationery_managementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Stationery_managementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="categories">
           <Key>
             <PropertyRef Name="id" />
@@ -56,6 +56,14 @@
           <Property Name="qty" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="rate" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="amount" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="product_image">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="product_id" Type="int" />
+          <Property Name="image_product" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="products">
           <Key>
@@ -164,6 +172,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__product_i__produ__41B8C09B">
+          <End Role="products" Type="Self.products" Multiplicity="0..1" />
+          <End Role="product_image" Type="Self.product_image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product_image">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__products__catego__66603565">
           <End Role="categories" Type="Self.categories" Multiplicity="1" />
           <End Role="products" Type="Self.products" Multiplicity="*" />
@@ -217,6 +237,7 @@
           <EntitySet Name="company" EntityType="Self.company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="orders" EntityType="Self.orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="orders_item" EntityType="Self.orders_item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="product_image" EntityType="Self.product_image" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="products" EntityType="Self.products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="roles" EntityType="Self.roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stores" EntityType="Self.stores" Schema="dbo" store:Type="Tables" />
@@ -239,6 +260,10 @@
             <End Role="products" EntitySet="products" />
             <End Role="orders_item" EntitySet="orders_item" />
           </AssociationSet>
+          <AssociationSet Name="FK__product_i__produ__41B8C09B" Association="Self.FK__product_i__produ__41B8C09B">
+            <End Role="products" EntitySet="products" />
+            <End Role="product_image" EntitySet="product_image" />
+          </AssociationSet>
           <AssociationSet Name="FK__products__catego__66603565" Association="Self.FK__products__catego__66603565">
             <End Role="categories" EntitySet="categories" />
             <End Role="products" EntitySet="products" />
@@ -256,8 +281,7 @@
             <End Role="users_roles" EntitySet="users_roles" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Stationery_managementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -337,6 +361,7 @@
           <NavigationProperty Name="category" Relationship="Self.FK__products__catego__66603565" FromRole="products" ToRole="categories" />
           <NavigationProperty Name="orders_item" Relationship="Self.FK__orders_it__produ__02084FDA" FromRole="products" ToRole="orders_item" />
           <NavigationProperty Name="store" Relationship="Self.FK__products__store___6754599E" FromRole="products" ToRole="stores" />
+          <NavigationProperty Name="product_image" Relationship="Stationery_managementModel.FK__product_i__produ__41B8C09B" FromRole="product" ToRole="product_image" />
         </EntityType>
         <EntityType Name="role">
           <Key>
@@ -527,7 +552,33 @@
             <End Role="users" EntitySet="users" />
             <End Role="users_roles" EntitySet="users_roles" />
           </AssociationSet>
+          <EntitySet Name="product_image" EntityType="Stationery_managementModel.product_image" />
+          <AssociationSet Name="FK__product_i__produ__41B8C09B" Association="Stationery_managementModel.FK__product_i__produ__41B8C09B">
+            <End Role="product" EntitySet="products" />
+            <End Role="product_image" EntitySet="product_image" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="product_image">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="product_id" Type="Int32" />
+          <Property Name="image_product" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="product" Relationship="Stationery_managementModel.FK__product_i__produ__41B8C09B" FromRole="product_image" ToRole="product" />
+        </EntityType>
+        <Association Name="FK__product_i__produ__41B8C09B">
+          <End Type="Stationery_managementModel.product" Role="product" Multiplicity="0..1" />
+          <End Type="Stationery_managementModel.product_image" Role="product_image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product_image">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -652,6 +703,15 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="users_id" ColumnName="users_id" />
                 <ScalarProperty Name="roles_id" ColumnName="roles_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="product_image">
+            <EntityTypeMapping TypeName="Stationery_managementModel.product_image">
+              <MappingFragment StoreEntitySet="product_image">
+                <ScalarProperty Name="image_product" ColumnName="image_product" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -35,5 +35,6 @@ namespace STATIONERY_MANAGE.Models
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<user> users { get; set; }
         public virtual DbSet<users_roles> users_roles { get; set; }
+        public virtual DbSet<product_image> product_image { get; set; }
     }
 }

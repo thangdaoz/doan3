@@ -23,6 +23,8 @@
         <AssociationConnector Association="Stationery_managementModel.FK__products__store___6754599E" ManuallyRouted="false" />
         <AssociationConnector Association="Stationery_managementModel.FK__users_rol__roles__5BE2A6F2" ManuallyRouted="false" />
         <AssociationConnector Association="Stationery_managementModel.FK__users_rol__users__01142BA1" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Stationery_managementModel.product_image" Width="1.5" PointX="5.25" PointY="5" />
+        <AssociationConnector Association="Stationery_managementModel.FK__product_i__produ__41B8C09B" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

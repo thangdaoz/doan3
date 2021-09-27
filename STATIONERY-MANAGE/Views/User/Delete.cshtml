@@ -1,4 +1,4 @@
-﻿
+﻿@model STATIONERY_MANAGE.Models.user
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -36,12 +36,14 @@
 
                 <h1>Do you really want to remove ?</h1>
 
-                <form action="" method="post">
-                    <input type="submit" class="btn btn-primary" name="confirm" value="Confirm">
-                    <a href="" class="btn btn-warning">Cancel</a>
-                </form>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken() 
+                    <input type="submit" class="btn btn-primary" name="delete" value="delete">
+                    <a href="@Url.Action("Index", "User")" class="btn btn-warning">Cancel</a>
+                }
 
-            </div>
+                </div>
             <!-- col-md-12 -->
         </div>
         <!-- /.row -->
@@ -58,3 +60,5 @@ $(document).ready(function() {
     $("#mainUserNav").addClass('active');
     $("#manageUserNav").addClass('active');
   });</script>
+
+

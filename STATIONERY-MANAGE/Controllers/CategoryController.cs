@@ -15,57 +15,59 @@ namespace STATIONERY_MANAGE.Controllers
         // GET: Category
         public ActionResult Index()
         {
-            if (Session["idUser"] != null)
-            {
-                return View(db.categories.ToList());
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-        }
-        //get: create
-        public ActionResult Create()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Create([Bind(Include = " name, active")] category category)
-        {
-
-            db.categories.Add(category);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
-        }
-        public ActionResult Edit(int? id)
-        {
             
-            category category = db.categories.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
+                return View();
+           
+
+        }
+        public ActionResult Getdata()
+        {
+            var result = db.categories.ToList();
+            return Json(new { Data = result, TotalItems = result.Count }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id, name, active")] category category)
+        public ActionResult create(category category)
         {
+            db.categories.Add(category);
+            try
+            {
+                db.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return Json(new { success = false });
+            }
+        }
+        public ActionResult Getid(int id)
+        {
+            category item = db.categories.Find(id);
+            return Json(new { data = item }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult update(category category)
+        {
+
             db.Entry(category).State = EntityState.Modified;
             db.SaveChanges();
-            return View();
+            return Json(new { success = true });
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult delete(int id)
+        public ActionResult Delete(int id)
         {
-            category category = db.categories.Find(id);
+            
+            var category = db.categories.Find(id);
             db.categories.Remove(category);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            var rs = db.SaveChanges();
+            if (rs > 0)
+            {
+                
+                return Json(new { Success = true });
+            }
+
+            return Json(new { Success = false });
         }
     }
 }

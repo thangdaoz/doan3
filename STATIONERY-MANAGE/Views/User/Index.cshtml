@@ -39,7 +39,7 @@
 
 
 
-                <a href="<?php echo base_url('users/create') ?>" class="btn btn-primary">Add User</a>
+                <a href="@Url.Action("Create" , "User")" class="btn btn-primary">Add User</a>
                 <br /> <br />
 
 
@@ -72,15 +72,15 @@
                                         <td>@Html.DisplayFor(modelItem => item.email)</td>
                                         <td>@Html.DisplayFor(modelItem => fullname)</td>
                                         <td>@Html.DisplayFor(modelItem => item.phone)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.users_roles)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.phone)</td>
 
 
                                         <td>
 
-                                            <a href="" class="btn btn-default"><i class="fa fa-edit"></i></a>
+                                            <a href="@Url.Action("Edit" , "User" , new { id=item.id} )" class="btn btn-default"><i class="fa fa-edit"></i></a>
 
 
-                                            <a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
+                                            <a href="@Url.Action("Delete" , "User" , new { id=item.id} )" class="btn btn-default"><i class="fa fa-trash"></i></a>
 
                                         </td>
 
@@ -110,4 +110,8 @@ $(document).ready(function() {
       $("#mainUserNav").addClass('active');
       $("#manageUserNav").addClass('active');
     });</script>
+
+
+
+
 

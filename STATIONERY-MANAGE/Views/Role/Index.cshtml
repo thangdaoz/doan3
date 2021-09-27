@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<STATIONERY_MANAGE.Models.role>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -26,14 +26,14 @@
         <div class="row">
             <div class="col-md-12 col-xs-12">
 
-                <div class="alert alert-success alert-dismissible" role="alert">
+                <div id="success" class="alert alert-success alert-dismissible hide" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="alert alert-error alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
 
-                <a href="<?php echo base_url('groups/create') ?>" class="btn btn-primary">Add Group</a>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add Role</button>
                 <br /> <br />
 
                 <div class="box">
@@ -42,30 +42,17 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="groupTable" class="table table-bordered table-striped">
+                        <table id="manageTable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Group Name</th>
                                     <th>Action</th>
                                 </tr>
+
                             </thead>
-                            <tbody>
+                            <tbody id="show_data">
 
-                                <tr>
-                                    <td></td>
-
-
-                                    <td>
-
-                                        <a href="" class="btn btn-default"><i class="fa fa-edit"></i></a>
-
-
-                                        <a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
-
-                                    </td>
-
-                                </tr>
-
+                                
                             </tbody>
                         </table>
                     </div>
@@ -82,13 +69,253 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+<!-- create brand modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="addModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Role</h4>
+            </div>
+
+            <form role="form" action="" method="post" id="createForm">
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="brand_name">Role Name</label>
+                        <input type="text" class="form-control" id="role_name" name="role_name" placeholder="Enter role name" autocomplete="off">
+                        <span class="error text-danger"></span>
+                    </div>
+                    
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="add_role" class="btn btn-primary">Save changes</button>
+                </div>
+
+            </form>
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- edit brand modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="editModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Role</h4>
+            </div>
+
+            <form role="form" action="" method="post" id="updateForm">
+
+                <div class="modal-body">
+                    <div id="messages"></div>
+
+                    <div class="form-group">
+                        <label for="edit_brand_name">Role Name</label>
+                        <input type="text" class="form-control" id="edit_role_name" name="edit_role_name" placeholder="Enter role name" autocomplete="off">
+                        <input type="hidden" id="role_id" value="0" />
+                        <span class="error text-danger"></span>
+                    </div>
+                    
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="editrole" class="btn btn-primary">Save changes</button>
+                </div>
+
+            </form>
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- remove brand modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="removeModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Remove Role</h4>
+            </div>
+
+            <form role="form" action="" method="post" id="removeForm">
+                <div class="modal-body">
+                    <input type="hidden" id="role_id_remove" value="0" />
+                    <p>Do you really want to remove?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="removerole" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <script type="text/javascript">
-$(document).ready(function() {
-      $('#groupTable').DataTable();
+    $(document).ready(function () {
+        LoadData();
+        $('#add_role').click(function () {
+            var name = $('#role_name').val();
+            var model = {
+                name: name
+     
+            };
+            if (Validate()) {
+                $.ajax(
+                    {
+                        url: '/Role/create',
+                        type: 'POST',
+                        data: model,
+                        success: function (res) {
+                            if (res.success) {
+                                LoadData();
+                                $('#addModal').modal('hide');
+                                $('#success').removeClass('hide').addClass('show');
+                            }
+                        }
+                    });
+            }
+        });
+    
+    $('body').on('click', '#edit_role', function () {
+        var id = $(this).data('id');
+        GetdatabyId(id);
+    });
+    $('#editrole').click(function () {
+        var name = $('#rolename_name').val();
+        var id = $('#role_id').val();
+        var model = {
+            id: id,
+            name: name,
+       
 
-      $("#mainGroupNav").addClass('active');
-      $("#manageGroupNav").addClass('active');
-    });</script>
+        };
+        if (Validate_edit()) {
+            $.ajax(
+                {
+                    url: '/Role/update',
+                    type: 'POST',
+                    data: model,
+                    success: function (res) {
+                        if (res.success) {
+                            LoadData();
+                            $('#editModal').modal('hide');
+                            $('#success').removeClass('hide').addClass('show');
+                        }
+                    }
+                });
+        }
+    });
+
+    $('body').on('click', '#remove_role', function () {
+            var id = $(this).data('id');
+            $('#role_id_remove').val(id);
+            $('#removeModal').modal('show');
+
+    });
+
+    $('#removerole').click(function () {
+            var id = $('#role_id_remove').val();
+            Delete(id);
+        });
+
+    });
+
+    function LoadData() {
+        $.ajax({
+            url: '/Role/Getdata',
+            type: 'GET',
+            success: function (res) {
+                if (res.TotalItems > 0) {
+                    var items = res.Data;
+                    var html = "";
+                    for (let i = 0; i < res.TotalItems; i++) {
+                        html += "<tr id='trow_" + items[i].id + "'>";
+
+                        html += "<td valign='top' colspan='1' > " + items[i].name + "</td>";
+                       
+                        html += "<td valign='top' colspan='1' ><button type='button' data-id='" + items[i].id + "' id='edit_role' class='btn btn-default'><i class='fa fa-edit'></i></button><button type = 'button' id='remove_role'  data-id='" + items[i].id + "' class='btn btn-default'> <i class='fa fa-remove'></i></button ></td>";
+
+                        html += "</tr>";
+                    }
+                    $('#show_data').html(html);
+                }
+            }
+        });
+    }
+
+    function Validate() {
+
+        var check = false;
+
+        var name = $('#role_name').val();
+        if (name === '') {
+            $('#role_name').next().html('you have not input value');
+            check = false;
+        } else {
+            $('#role_name').next().html('');
+            check = true;
+        }
+        return check
+    }
+    function GetdatabyId(id) {
+        $.ajax({
+            url: '/Role/Getid',
+            type: 'GET',
+            data: { id: id },
+            success: function (res) {
+                if (res.data != null) {
+                    $('#edit_role_name').val(res.data.name);
+
+                    $('#role_id').val(res.data.id);
+                    $('#editModal').modal('show');
+                }
+            }
+        });
+    }
+    function Delete(id) {
+        $.ajax({
+            url: '/Role/Delete',
+            type: 'POST',
+            data: { id: id }
+
+
+        }).done(function (res) {
+            if (res.Success) {
+                $('#trow_' + id).remove();
+                $('#removeModal').modal('hide');
+                $('#success').removeClass('hide').addClass('show');
+            }
+        }).fail(function (err) {
+            $('#fail').removeClass('hide').addClass('show');
+            console.log(err);
+
+        });
+    }
+    function Validate_edit() {
+
+        var check = false;
+
+        var name = $('#edit_role_name').val();
+        if (name === '') {
+            $('#edit_role_name').next().html('you have not input value');
+            check = false;
+        } else {
+            $('#edit_role_name').next().html('');
+            check = true;
+        }
+        return check
+    }
+
+</script>
 
 

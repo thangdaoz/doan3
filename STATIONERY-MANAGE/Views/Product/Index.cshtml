@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable < STATIONERY_MANAGE.Models.product>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -40,7 +40,7 @@
                 </div>
 
 
-                <a href="<?php echo base_url('products/create') ?>" class="btn btn-primary">Add Product</a>
+                <a href="@Url.Action("create","Product")" class="btn btn-primary">Add Product</a>
                 <br /> <br />
 
 
@@ -60,12 +60,51 @@
                                     <th>Qty</th>
                                     <th>Store</th>
                                     <th>Availability</th>
-                                    <?php if(in_array('updateProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
                                     <th>Action</th>
-                                    <?php endif; ?>
                                 </tr>
                             </thead>
+                            <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr id="">
 
+                                    <td valign="top" colspan="1"> 
+                                        <img width="50px" height="50px" alt="image"  src="~/@item.image" />
+                                    </td>
+                                    
+                                    <td valign="top" colspan="1">
+                                        @Html.DisplayFor(modelItem => item.sku)
+                                    </td>
+                                
+                                    
+                                    <td valign='top' colspan="1">
+                                        @Html.DisplayFor(modelItem => item.name)
+                                    </td>
+                                    <td valign="top" colspan="1">
+                                        @Html.DisplayFor(modelItem => item.price)
+                                    </td>
+                                    <td valign="top" colspan="1">
+                                        @Html.DisplayFor(modelItem => item.qty)
+                                    </td>
+                                    <td valign="top" colspan="1">
+                                        @Html.DisplayFor(modelItem => item.store.name)
+                                    </td>
+                                    
+                                    <td valign="top" colspan="1">
+
+                                         @Html.DisplayFor(modelItem => item.availability)
+                                    </td>
+                                    <td valign="top" colspan="1">
+
+                                        <button type='button' id='edit_product' class='btn btn-default' onClick="location.href ='@Url.Action("edit", "Product", new { id = item.id })'"><i class='fa fa-edit'></i></button>
+                                        <button type='button' id='image_product' class='btn btn-default' onClick="location.href ='@Url.Action("addimage", "Product", new { id = item.id })'"><i class='fa fa-image'></i></button>
+                                    </td>
+                                    
+
+                                   
+                                </tr>
+                            }
+                            </tbody>
                         </table>
                     </div>
                     <!-- /.box-body -->
@@ -104,68 +143,11 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php endif; ?>
 
 
 
 <script type="text/javascript">
-var manageTable;
-var base_url = "<?php echo base_url(); ?>";
 
-$(document).ready(function() {
-
-  $("#mainProductNav").addClass('active');
-
-  // initialize the datatable
-  manageTable = $('#manageTable').DataTable({
-    'ajax': base_url + 'products/fetchProductData',
-    'order': []
-  });
-
-});
-
-// remove functions
-function removeFunc(id)
-{
-  if(id) {
-    $("#removeForm").on('submit', function() {
-
-      var form = $(this);
-
-      // remove the text-danger
-      $(".text-danger").remove();
-
-      $.ajax({
-        url: form.attr('action'),
-        type: form.attr('method'),
-        data: { product_id:id },
-        dataType: 'json',
-        success:function(response) {
-
-          manageTable.ajax.reload(null, false);
-
-          if(response.success === true) {
-            $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-              '<strong> <span class="glyphicon glyphicon-ok-sign"></span> </strong>'+response.messages+
-            '</div>');
-
-            // hide the modal
-            $("#removeModal").modal('hide');
-
-          } else {
-
-            $("#messages").html('<div class="alert alert-warning alert-dismissible" role="alert">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
-              '<strong> <span class="glyphicon glyphicon-exclamation-sign"></span> </strong>'+response.messages+
-            '</div>');
-          }
-        }
-      });
-
-      return false;
-    });
-  }
-}</script>
+</script>
 
 
