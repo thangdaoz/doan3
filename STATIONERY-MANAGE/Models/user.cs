@@ -11,7 +11,8 @@ namespace STATIONERY_MANAGE.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class user
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,13 +21,23 @@ namespace STATIONERY_MANAGE.Models
             this.orders = new HashSet<order>();
             this.users_roles = new HashSet<users_roles>();
         }
-    
+        
         public int id { get; set; }
+        [Required]
         public string password { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string email { get; set; }
+        [Required]
         public string firstname { get; set; }
+        [Required]
         public string lastname { get; set; }
+        [Required]
         public string phone { get; set; }
+        [Required]
+        [Compare("password")]
+        public string comfirmpassword { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<order> orders { get; set; }

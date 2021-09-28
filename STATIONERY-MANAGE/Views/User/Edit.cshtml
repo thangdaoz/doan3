@@ -33,26 +33,20 @@
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
 
-                <div class="box">
+                <div class="box"> 
                     <div class="box-header">
                         <h3 class="box-title">Edit User</h3>
                     </div>
-                    @using (Html.BeginForm("Edit", "User", FormMethod.Post))
+                    @using (Html.BeginForm("edit", "user", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                         <div class="box-body">
 
-                            @Html.HiddenFor(model => model.user_role_id, new { htmlAttributes = new { name = "user_roleid" } })
+                            @Html.HiddenFor(model => model.user_role_id )
                             <div class="form-group">
-                                <label for="groups">Groups</label>
-                                <select class="form-control" id="role_id" name="role_id">
-                                    <option value="">Select Groups</option>
-                                    @foreach (var item in ViewBag.getroles)
-                                    {
-                                        <option value="@item.id">@item.name</option>
-                                    }
-
-                                </select>
+                                <label for="RoleID">Groups</label>
+                                @Html.DropDownList("RoleID", string.Empty)
+                                
                             </div>
 
 
@@ -62,14 +56,12 @@
 
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php echo $user_data['email'] ?>" autocomplete="off">
                                 @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @id = "email", @name = "email", @laceholder = "Email" } })
 
                             </div>
 
                             <div class="form-group">
                                 <label for="fname">First name</label>
-                                <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" value="<?php echo $user_data['firstname'] ?>" autocomplete="off">
                                 @Html.EditorFor(model => model.firstname, new { htmlAttributes = new { @class = "form-control", @id = "firstname", @name = "firstname", @placeholder = "First name" } })
 
 
@@ -77,14 +69,12 @@
 
                             <div class="form-group">
                                 <label for="lname">Last name</label>
-                                <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" value="<?php echo $user_data['lastname'] ?>" autocomplete="off">
                                 @Html.EditorFor(model => model.lastname, new { htmlAttributes = new { @class = "form-control", @id = "lastname", @name = "lastname", @placeholder = "First name" } })
 
                             </div>
 
                             <div class="form-group">
                                 <label for="phone">Phone</label>
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" value="<?php echo $user_data['phone'] ?>" autocomplete="off">
                                 @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @id = "phone", @name = "phone", @placeholder = "Phone" } })
 
                             </div>
@@ -92,9 +82,8 @@
 
 
                             <div class="form-group">
-                                <label for="cpassword">password</label>
-                                <input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="Confirm Password" autocomplete="off">
-                                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", @id = "phone", @name = "phone", @placeholder = "Phone" } })
+                                <label for="password">password</label>
+                                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", @id = "password", @name = "password", @placeholder = "Password" } })
 
                             </div>
 
@@ -124,7 +113,7 @@ $(document).ready(function() {
 
     $("#mainUserNav").addClass('active');
     $("#manageUserNav").addClass('active');
-    $("#role_id").val("@Model.roles_id");
+   
 
   });</script>
 

@@ -27,15 +27,7 @@
             <div class="col-md-12 col-xs-12">
 
 
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
-                </div>
-
-                <div class="alert alert-error alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
-                </div>
+               
 
 
                 <div class="box">
@@ -45,55 +37,66 @@
                     @using (Html.BeginForm("Create", "User", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
-                        <div class="box-body">
+                <div class="box-body">
 
 
 
-                            <div class="form-group">  
-                                <label for="groups">Groups</label>
-                                <select class="form-control" id="role_id" name="role_id">
-                                    <option value="">Select Groups</option>
-                                    @foreach (var item in ViewBag.getroles)
-                                    {
-                                        <option value="@item.id">@item.name</option>
-                                    }
+                    <div class="form-group">
+                        <label for="RoleID">Groups</label>
+                            
+                            
+                            @Html.DropDownList("RoleID", string.Empty)
+                        
+                    </div>
 
-                                </select>
-                            </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @id = "email", @name = "email", @placeholder = "Email", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
 
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @id = "email", @name = "email", @placeholder = "Email", @autocomplete = "off" } })
+                    </div>
 
-                            </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", @id = "password", @name = "password", @placeholder = "Password", @type = "password", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
 
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", @id = "password", @name = "password", @placeholder = "Password",@type = "password", @autocomplete = "off" } })
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Comfirm Password</label>
+                        @Html.EditorFor(model => model.comfirmpassword, new { htmlAttributes = new { @class = "form-control", @id = "comfirmpassword", @name = "comfirmpassword", @placeholder = "Comfirm Password", @type = "password", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.comfirmpassword, "", new { @class = "text-danger" })
 
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="fname">First name</label>
-                                @Html.EditorFor(model => model.firstname, new { htmlAttributes = new { @class = "form-control", @id = "fname", @name = "fname", @placeholder = "First name", @autocomplete = "off" } })
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="lname">Last name</label>
-                                @Html.EditorFor(model => model.lastname, new { htmlAttributes = new { @class = "form-control", @id = "lname", @name = "lname", @placeholder = "Last name", @autocomplete = "off" } })
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="phone">Phone</label>
-                                @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @id = "phone", @name = "phone", @placeholder = "Phone", @autocomplete = "off" } })
-
-                            </div>
+                    </div>
 
 
-                        </div>
+                    <div class="form-group">
+                        <label for="fname">First name</label>
+                        @Html.EditorFor(model => model.firstname, new { htmlAttributes = new { @class = "form-control", @id = "fname", @name = "fname", @placeholder = "First name", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.firstname, "", new { @class = "text-danger" })
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lname">Last name</label>
+                        @Html.EditorFor(model => model.lastname, new { htmlAttributes = new { @class = "form-control", @id = "lname", @name = "lname", @placeholder = "Last name", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.lastname, "", new { @class = "text-danger" })
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @id = "phone", @name = "phone", @placeholder = "Phone", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @if (ViewBag.error != null)
+                        {
+                            <span class="has-error">@ViewBag.error</span>
+                        }
+                    </div>
+                </div>
                         <!-- /.box-body -->
 
                         <div class="box-footer">

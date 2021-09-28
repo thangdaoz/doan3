@@ -8,6 +8,7 @@ using STATIONERY_MANAGE.Models;
 
 namespace STATIONERY_MANAGE.Controllers
 {
+    [Authorize]
     public class RoleController : Controller
     {
         private Stationery_managementEntities db = new Stationery_managementEntities();

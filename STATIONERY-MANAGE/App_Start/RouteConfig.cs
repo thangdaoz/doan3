@@ -18,6 +18,7 @@ namespace STATIONERY_MANAGE
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "User", action = "login", id = UrlParameter.Optional }
             );
+
         }
     }
 }

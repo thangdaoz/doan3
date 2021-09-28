@@ -1,4 +1,4 @@
-﻿@model STATIONERY_MANAGE.Models.user
+﻿@model IEnumerable<STATIONERY_MANAGE.Models.users_roles>
 
     @{
         ViewBag.Title = "Profile";
@@ -34,25 +34,32 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <table class="table table-bordered table-condensed table-hovered">
+                                @foreach (var item in Model)
+                                {
 
-                                <tr>
-                                    <th>Email</th>
-                                    <td>@Model.email   </td>
-                                </tr>
-                                <tr>
-                                    <th>First Name</th>
-                                    <td>@Model.firstname</td>
-                                </tr>
-                                <tr>
-                                    <th>Last Name</th>
-                                    <td>@Model.lastname</td>
-                                </tr>
-                                
-                                <tr>
-                                    <th>Phone</th>
-                                    <td>@Model.phone</td>
-                                </tr>
-                            </table>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>@Html.DisplayFor(modelItem => item.user.email)  </td>
+                                    </tr>
+                                    <tr>
+                                        <th>First Name</th>
+                                        <td>@Html.DisplayFor(modelItem => item.user.firstname) </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Last Name</th>
+                                        <td>@Html.DisplayFor(modelItem => item.user.lastname)</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Phone</th>
+                                        <td>@Html.DisplayFor(modelItem => item.user.phone)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Role</th>
+                                        <td>@Html.DisplayFor(modelItem => item.role.name)</td>
+                                    </tr>
+                                }
+                                </table>
                         </div>
                         <!-- /.box-body -->
                     </div>

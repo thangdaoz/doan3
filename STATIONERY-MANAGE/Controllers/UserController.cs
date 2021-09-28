@@ -11,7 +11,8 @@ using System.Net;
 
 namespace STATIONERY_MANAGE.Controllers
 {
-    
+
+    [Authorize]
 
     public class UserController : Controller
     {
@@ -19,30 +20,39 @@ namespace STATIONERY_MANAGE.Controllers
         // GET: User
         public ActionResult Index()
         {
-            return View(db.users.ToList());
+            var users = db.users_roles.Include(c => c.user).Include(a => a.role);
+            return View(users);
         }
-
+        [Authorize(Roles ="admin")]
         public ActionResult Create()
         {
-            List<role> roles = db.roles.ToList();
-            ViewBag.getroles = roles;
-
+            roleDropDownList();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id , email , password, firstname, lastname, phone")] user user, int role_id)
+        public ActionResult Create([Bind(Include = "id , email , password, comfirmpassword , firstname, lastname, phone")] user user, int RoleID)
         {
+            roleDropDownList();
             if (ModelState.IsValid)
             {
-                db.users.Add(user);
-                db.SaveChanges();
-                users_roles users_Roles = new users_roles();
-                users_Roles.users_id = user.id;
-                users_Roles.roles_id = role_id;
-                db.users_roles.Add(users_Roles);
-                db.SaveChanges();
-                return RedirectToAction("Index", "User");
+                var check = db.users.FirstOrDefault(s => s.email == user.email);
+                if (check == null)
+                {
+                    db.users.Add(user);
+                    db.SaveChanges();
+                    users_roles users_Roles = new users_roles();
+                    users_Roles.users_id = user.id;
+                    users_Roles.roles_id = RoleID;
+                    db.users_roles.Add(users_Roles);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "User");
+                }
+                else
+                {
+                    ViewBag.error = "email already exist!! use another emmail please";
+                    return View();
+                }
             }
             return View(user);
         }
@@ -71,11 +81,12 @@ namespace STATIONERY_MANAGE.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-        
+        [AllowAnonymous]
         public ActionResult login()
         {
             return View();
         }
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult login(user user)
@@ -89,6 +100,7 @@ namespace STATIONERY_MANAGE.Controllers
                     
                     FormsAuthentication.SetAuthCookie(user.email, false);
                     Session["idUser"] = data.FirstOrDefault().id;
+                    Session["email"] = data.FirstOrDefault().email;
                     return RedirectToAction("Index", "Category");
                 }
             }    
@@ -103,6 +115,7 @@ namespace STATIONERY_MANAGE.Controllers
             }
             var user = db.users.Find(id);
             var userrole = db.users_roles.Where(x => x.users_id == id).FirstOrDefault();
+            roleDropDownList(userrole.roles_id);
             UserView model = new UserView()
             {
                 userid = user.id,
@@ -117,8 +130,7 @@ namespace STATIONERY_MANAGE.Controllers
             };
 
 
-            List<role> roles = db.roles.ToList();
-            ViewBag.getroles = roles;
+            
             if (model == null)
             {
                 return HttpNotFound();
@@ -126,52 +138,82 @@ namespace STATIONERY_MANAGE.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult Edit([Bind(Include = "id , email , password, firstname, lastname, phone")] user user, int role_id, int user_roleid)
+        [ValidateAntiForgeryToken]
+
+        public ActionResult Edit([Bind(Include = "id , email , password, firstname, lastname, phone")] user user, int RoleID, int user_role_id)
         {
-            if (ModelState.IsValid)
+            if (user != null)
             {
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-                users_roles users_Roles = new users_roles();
-                users_Roles.id = user_roleid;
-                users_Roles.users_id = user.id;
-                users_Roles.roles_id = role_id;
-                db.Entry(users_Roles).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index", "User");
+                 roleDropDownList(RoleID);
+                 user.comfirmpassword = user.password;
+                 db.Entry(user).State = EntityState.Modified;
+                 db.SaveChanges();
+                 users_roles users_Roles = new users_roles();
+                 users_Roles.id = user_role_id;
+                 users_Roles.users_id = user.id;
+                 users_Roles.roles_id = RoleID;
+                 db.Entry(users_Roles).State = EntityState.Modified;
+                 db.SaveChanges();
+                ViewBag.error = "error";
+
+                return RedirectToAction("index", "user");
             }
-            return View();
+            ViewBag.sucess = "sucessfull";
+            return RedirectToAction("index", "user");
         }
         public ActionResult profile()
         {
-            string stringid = Session["idUser"].ToString();
-            int id = Int32.Parse(stringid);
-            var model = new UserView()
+            if (Session["idUser"] != null)
             {
+                string stringid = Session["idUser"].ToString();
+                int id = Int32.Parse(stringid);
 
-            };
-            user user = db.users.Find(id);
-            return View(user);
+                var userrole = db.users_roles.Where(x => x.users_id == id).Include(c => c.user).Include(a => a.role);
+
+                return View(userrole.ToList());
+            }
+            return View();
         }
         public ActionResult setting()
         {
             string stringid = Session["idUser"].ToString();
             int id = Int32.Parse(stringid);
+
             user user = db.users.Find(id);
             return View(user);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult setting([Bind(Include = "id , email , password , firstname, lastname, phone")] user user)
+        public ActionResult setting([Bind(Include = "id , email , password, comfirmpassword , firstname, lastname, phone")] user user , string newpassowrd)
         {
             if (ModelState.IsValid) {
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
 
+                bool isvalid = db.users.Any(x => x.id == user.id && x.password == user.password && x.comfirmpassword == user.comfirmpassword);
+                if (isvalid)
+                {
+                    user.password = newpassowrd;
+                    user.comfirmpassword = newpassowrd;
+
+                    db.Entry(user).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                
+                }
+                
+                else
+                {
+                    return View(user);
+                }
             }
 
             return View(user);
+        }
+        private void roleDropDownList(object selectedrole = null)
+        {
+            var role = from d in db.roles
+                       orderby d.name
+                       select d;
+            ViewBag.RoleID = new SelectList(role, "id", "name", selectedrole);
         }
         public ActionResult Logout()
         {

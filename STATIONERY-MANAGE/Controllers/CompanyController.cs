@@ -8,7 +8,7 @@ using STATIONERY_MANAGE.Models;
 
 namespace STATIONERY_MANAGE.Controllers
 {
-  
+    [Authorize]
     public class CompanyController : Controller
     {
         // GET: Company

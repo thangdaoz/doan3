@@ -195,7 +195,7 @@
                 if (Validate()) {
                     $.ajax(
                         {
-                            url: '/Store/createorder',
+                            url: '/Store/create',
                             type: 'POST',
                             data: model,
                             success: function (res) {
@@ -203,6 +203,9 @@
                                     LoadData();
                                     $('#addModal').modal('hide');
                                     $('#sucess').removeClass('hide').addClass('show');
+                                }
+                                else {
+                                    console.log("loi");
                                 }
                             }
                         });

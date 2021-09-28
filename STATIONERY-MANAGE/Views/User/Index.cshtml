@@ -1,4 +1,4 @@
-﻿@model IEnumerable<STATIONERY_MANAGE.Models.user>
+﻿@model IEnumerable<STATIONERY_MANAGE.Models.users_roles>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout1.cshtml";
@@ -27,16 +27,11 @@
             <div class="col-md-12 col-xs-12">
 
 
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
-                </div>
-
-                <div class="alert alert-error alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
-                </div>
-
+                
+                @if (ViewBag.sucess != null)
+                {
+                    <span class="has-error">@ViewBag.sucess</span>
+                })
 
 
                 <a href="@Url.Action("Create" , "User")" class="btn btn-primary">Add User</a>
@@ -53,7 +48,7 @@
                         <table id="userTable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Username</th>
+
                                     <th>Email</th>
                                     <th>Name</th>
                                     <th>Phone</th>
@@ -66,21 +61,22 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    var fullname = item.firstname + " " + item.lastname;
+
+
+                                    string fullname = item.user.firstname + " " + item.user.lastname;
                                     <tr>
-                                        <td>@Html.DisplayFor(modelItem => item.email)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.email)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.user.email)</td>
                                         <td>@Html.DisplayFor(modelItem => fullname)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.phone)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.phone)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.user.phone)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.role.name)</td>
 
 
                                         <td>
 
-                                            <a href="@Url.Action("Edit" , "User" , new { id=item.id} )" class="btn btn-default"><i class="fa fa-edit"></i></a>
+                                            <a href="@Url.Action("Edit", "User", new { id = item.user.id })" class="btn btn-default"><i class="fa fa-edit"></i></a>
 
 
-                                            <a href="@Url.Action("Delete" , "User" , new { id=item.id} )" class="btn btn-default"><i class="fa fa-trash"></i></a>
+                                            <a href="@Url.Action("Delete", "User", new { id = item.user.id })" class="btn btn-default"><i class="fa fa-trash"></i></a>
 
                                         </td>
 

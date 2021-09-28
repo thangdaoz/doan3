@@ -8,7 +8,7 @@ using STATIONERY_MANAGE.Models;
 
 namespace STATIONERY_MANAGE.Controllers
 {
-
+    [Authorize]
     public class CategoryController : Controller
     {
         private Stationery_managementEntities db = new Stationery_managementEntities();
@@ -22,6 +22,7 @@ namespace STATIONERY_MANAGE.Controllers
         }
         public ActionResult Getdata()
         {
+            db.Configuration.ProxyCreationEnabled = false;
             var result = db.categories.ToList();
             return Json(new { Data = result, TotalItems = result.Count }, JsonRequestBehavior.AllowGet);
         }

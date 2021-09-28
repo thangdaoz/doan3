@@ -9,16 +9,18 @@ using STATIONERY_MANAGE.Models;
 
 namespace STATIONERY_MANAGE.Controllers
 {
+    [Authorize]
     public class StoreController : Controller
     {
         Stationery_managementEntities db = new Stationery_managementEntities();
         // GET: Store
         public ActionResult Index()
         {
-            return View(db.stores.ToList());
+            return View();
         }
         public ActionResult Getdata()
         {
+            db.Configuration.ProxyCreationEnabled = false;
             var result = db.stores.ToList();
             return Json(new { Data = result, TotalItems = result.Count }, JsonRequestBehavior.AllowGet);
         }

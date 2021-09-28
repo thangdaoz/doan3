@@ -115,6 +115,7 @@
           <Property Name="firstname" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="lastname" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="phone" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="comfirmpassword" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="users_roles">
           <Key>
@@ -402,6 +403,7 @@
           <Property Name="phone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="orders" Relationship="Self.FK__orders__user_id__02FC7413" FromRole="users" ToRole="orders" />
           <NavigationProperty Name="users_roles" Relationship="Self.FK__users_rol__users__01142BA1" FromRole="users" ToRole="users_roles" />
+          <Property Name="comfirmpassword" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="users_roles">
           <Key>
@@ -688,6 +690,7 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="Stationery_managementModel.user">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="comfirmpassword" ColumnName="comfirmpassword" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="email" ColumnName="email" />

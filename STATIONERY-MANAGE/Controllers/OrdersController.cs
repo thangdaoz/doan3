@@ -9,8 +9,10 @@ using System.Data.Entity;
 
 namespace STATIONERY_MANAGE.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
+
         Stationery_managementEntities db = new Stationery_managementEntities();
         // GET: Orders
         public ActionResult Index()

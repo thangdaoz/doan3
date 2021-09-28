@@ -10,6 +10,7 @@ using System.Net;
 using System.Data.Entity;
 namespace STATIONERY_MANAGE.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         Stationery_managementEntities db = new Stationery_managementEntities();
