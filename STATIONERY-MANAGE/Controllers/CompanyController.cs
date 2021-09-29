@@ -13,6 +13,7 @@ namespace STATIONERY_MANAGE.Controllers
     {
         // GET: Company
         Stationery_managementEntities db = new Stationery_managementEntities();
+        [Authorize(Roles = "admin")]
         public ActionResult Index(int? id )
         {
             
@@ -27,6 +28,7 @@ namespace STATIONERY_MANAGE.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult index([Bind(Include = "id,service_charge_value,vat_charge_value,address,phone,country,message")] company company)
         {
             if (ModelState.IsValid)

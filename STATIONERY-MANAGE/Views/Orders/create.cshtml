@@ -172,7 +172,6 @@
                         <div class="box-footer">
                             <input type="hidden" name="service_charge_rate" value="" autocomplete="off">
                             <input type="hidden" name="vat_charge_rate" value="" autocomplete="off">
-                            <button type="submit" id="btnAdd123" class="btn btn-primary">Create Order</button>
                             <button type="button" id="btnadd" class="btn btn-primary">Create Order</button>
 
                             <a href="@Url.Action("Index")" class="btn btn-warning">Back</a>
@@ -274,6 +273,7 @@
 
                 success: function (data) {
                     console.log(data.message);
+                    window.location.href = "Orders/Index";
                 }
             });
         });

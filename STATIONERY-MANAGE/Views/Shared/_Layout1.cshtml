@@ -127,41 +127,25 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu" data-widget="tree">
 
-                    <li id="dashboardMainMenu">
-                        <a href="<?php echo base_url('dashboard') ?>">
-                            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                        </a>
-                    </li>
+                    @if (User.IsInRole("admin"))
+                    {
 
-                    <li class="treeview" id="mainUserNav">
-                        <a href="#">
-                            <i class="fa fa-users"></i>
-                            <span>Users</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li id="createUserNav"><a href="@Url.Action("Create", "User")"> <i class="fa fa-circle-o"></i> Create User</a></li>
+                        <li class="treeview" id="mainUserNav">
+                            <a href="#">
+                                <i class="fa fa-users"></i>
+                                <span>Users</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
 
-                            <li id="manageUserNav"><a href="@Url.Action("Index", "User")"><i class="fa fa-circle-o"></i> Manage Users</a></li>
-                        </ul>
-                    </li>
+                                <li id="createUserNav"><a href="@Url.Action("Create", "User")"> <i class="fa fa-circle-o"></i> Create User</a></li>
 
-                    <li class="treeview" id="mainGroupNav">
-                        <a href="#">
-                            <i class="fa fa-files-o"></i>
-                            <span>Groups</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li id="addGroupNav"><a href="@Url.Action("Create", "Role")"><i class="fa fa-circle-o"></i> Add Group</a></li>
-                            <li id="manageGroupNav"><a href="@Url.Action("Index", "Role")"><i class="fa fa-circle-o"></i> Manage Groups</a></li>
-                        </ul>
-                    </li>
-
+                                <li id="manageUserNav"><a href="@Url.Action("Index", "User")"><i class="fa fa-circle-o"></i> Manage Users</a></li>
+                            </ul>
+                        </li>
+                    }
 
 
                     <li class="treeview" id="mainGroupNav">
@@ -178,7 +162,7 @@
                         </ul>
                     </li>
 
-                    
+
 
                     <li id="storeNav">
                         <a href="@Url.Action("Index", "Store")">
@@ -186,7 +170,7 @@
                         </a>
                     </li>
 
-                   
+
 
                     <li class="treeview" id="mainProductNav">
                         <a href="#">
@@ -217,27 +201,21 @@
                         </ul>
                     </li>
 
-                    <li id="reportNav">
-                        <a href="<?php echo base_url('reports/') ?>">
-                            <i class="glyphicon glyphicon-stats"></i> <span>Reports</span>
-                        </a>
-                    </li>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li id="companyNav"><a href="@Url.Action("Index", "Company")"><i class="fa fa-files-o"></i> <span>Company</span></a></li>
 
 
-                   
-                    <li id="companyNav"><a href="@Url.Action("Index", "Company")"><i class="fa fa-files-o"></i> <span>Company</span></a></li>
-                    
+                    }
 
+                        <!-- <li class="header">Settings</li> -->
+                        <li><a href="@Url.Action("Profile", "User")"><i class="fa fa-user-o"></i> <span>Profile</span></a></li>
+                        <li><a href="@Url.Action("Setting", "User")"><i class="fa fa-wrench"></i> <span>Setting</span></a></li>
 
+                        <!-- user permission info -->
+                        <li><a href="@Url.Action("Logout", "User")"><i class="glyphicon glyphicon-log-out"></i> <span>Logout</span></a></li>
 
-                    <!-- <li class="header">Settings</li> -->
-                    <li><a href="@Url.Action("Profile", "User")"><i class="fa fa-user-o"></i> <span>Profile</span></a></li>
-                    <li><a href="@Url.Action("Setting", "User")"><i class="fa fa-wrench"></i> <span>Setting</span></a></li>
-
-                    <!-- user permission info -->
-                    <li><a href="@Url.Action("Logout", "User")"><i class="glyphicon glyphicon-log-out"></i> <span>Logout</span></a></li>
-
-                </ul>
+                    </ul>
             </section>
             <!-- /.sidebar -->
         </aside>

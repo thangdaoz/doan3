@@ -18,12 +18,13 @@ namespace STATIONERY_MANAGE.Controllers
     {
         Stationery_managementEntities db = new Stationery_managementEntities();
         // GET: User
+        [Authorize(Roles = "admin")]
         public ActionResult Index()
         {
             var users = db.users_roles.Include(c => c.user).Include(a => a.role);
             return View(users);
         }
-        [Authorize(Roles ="admin")]
+        
         public ActionResult Create()
         {
             roleDropDownList();
@@ -31,6 +32,7 @@ namespace STATIONERY_MANAGE.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public ActionResult Create([Bind(Include = "id , email , password, comfirmpassword , firstname, lastname, phone")] user user, int RoleID)
         {
             roleDropDownList();
@@ -56,7 +58,8 @@ namespace STATIONERY_MANAGE.Controllers
             }
             return View(user);
         }
-        
+
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -72,8 +75,10 @@ namespace STATIONERY_MANAGE.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int id)
         {
+            
             user user = db.users.Find(id);
             db.users.Remove(user);
             users_roles users_Roles = db.users_roles.Where(x => x.users_id == id).FirstOrDefault();
@@ -84,6 +89,11 @@ namespace STATIONERY_MANAGE.Controllers
         [AllowAnonymous]
         public ActionResult login()
         {
+            if (Session["idUser"] != null)
+            {
+                return RedirectToAction("index", "category");
+
+            }
             return View();
         }
         [AllowAnonymous]
@@ -91,7 +101,9 @@ namespace STATIONERY_MANAGE.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult login(user user)
         {
-            using(Stationery_managementEntities db = new Stationery_managementEntities())
+            
+            
+            using (Stationery_managementEntities db = new Stationery_managementEntities())
             {
                 bool isvalid = db.users.Any(x => x.email == user.email && x.password == user.password);
                 var data = db.users.Where(x => x.email == user.email && x.password == user.password).ToList();
@@ -107,6 +119,7 @@ namespace STATIONERY_MANAGE.Controllers
             return View();
 
         }
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -139,7 +152,7 @@ namespace STATIONERY_MANAGE.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-
+        [Authorize(Roles = "admin")]
         public ActionResult Edit([Bind(Include = "id , email , password, firstname, lastname, phone")] user user, int RoleID, int user_role_id)
         {
             if (user != null)
@@ -161,6 +174,7 @@ namespace STATIONERY_MANAGE.Controllers
             ViewBag.sucess = "sucessfull";
             return RedirectToAction("index", "user");
         }
+
         public ActionResult profile()
         {
             if (Session["idUser"] != null)

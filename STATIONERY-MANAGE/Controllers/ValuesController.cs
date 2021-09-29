@@ -4,15 +4,23 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using STATIONERY_MANAGE.Models;
+
+
+using System.Security.Claims;
 
 namespace STATIONERY_MANAGE.Controllers
 {
     public class ValuesController : ApiController
     {
         // GET api/values
-        public IEnumerable<string> Get()
+        public IEnumerable<product> Get()
         {
-            return new string[] { "value1", "value2" };
+            using (Stationery_managementEntities db = new Stationery_managementEntities())
+            {
+                db.Configuration.ProxyCreationEnabled = false;
+                return db.products.ToList();
+            }
         }
 
         // GET api/values/5
