@@ -11,7 +11,8 @@ namespace STATIONERY_MANAGE.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,14 +23,23 @@ namespace STATIONERY_MANAGE.Models
         }
     
         public int id { get; set; }
+        [Required]
         public string name { get; set; }
+        [Required]
         public string sku { get; set; }
+        [Required]
         public string price { get; set; }
+        [Required]
         public string qty { get; set; }
+        [Required]
         public string description { get; set; }
+        [Required]
         public int store_id { get; set; }
+        [Required]
         public int availability { get; set; }
+        [Required]
         public int category_id { get; set; }
+        [Required]
         public string image { get; set; }
     
         public virtual category category { get; set; }

@@ -11,7 +11,8 @@ namespace STATIONERY_MANAGE.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class company
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,11 +22,17 @@ namespace STATIONERY_MANAGE.Models
         }
     
         public int id { get; set; }
+        [Required]
         public double service_charge_value { get; set; }
+        [Required]
         public double vat_charge_value { get; set; }
+        [Required]
         public string address { get; set; }
+        [Required]
         public string phone { get; set; }
+        [Required]
         public string country { get; set; }
+        [Required]
         public string message { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
