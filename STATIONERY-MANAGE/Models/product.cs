@@ -26,10 +26,12 @@ namespace STATIONERY_MANAGE.Models
         [Required]
         public string name { get; set; }
         [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
         public string sku { get; set; }
         [Required]
         public string price { get; set; }
         [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
         public string qty { get; set; }
         [Required]
         public string description { get; set; }
@@ -39,7 +41,6 @@ namespace STATIONERY_MANAGE.Models
         public int availability { get; set; }
         [Required]
         public int category_id { get; set; }
-        [Required]
         public string image { get; set; }
     
         public virtual category category { get; set; }

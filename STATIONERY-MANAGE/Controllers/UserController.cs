@@ -198,15 +198,16 @@ namespace STATIONERY_MANAGE.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult setting([Bind(Include = "id , email , password, comfirmpassword , firstname, lastname, phone")] user user , string newpassowrd)
+        public ActionResult setting([Bind(Include = "id , email , password, comfirmpassword , firstname, lastname, phone")] user user , string newpassword)
         {
             if (ModelState.IsValid) {
 
                 bool isvalid = db.users.Any(x => x.id == user.id && x.password == user.password && x.comfirmpassword == user.comfirmpassword);
                 if (isvalid)
                 {
-                    user.password = newpassowrd;
-                    user.comfirmpassword = newpassowrd;
+                    db.Configuration.ProxyCreationEnabled = false;
+                    user.password = newpassword;
+                    user.comfirmpassword = newpassword;
 
                     db.Entry(user).State = EntityState.Modified;
                     db.SaveChanges();

@@ -13,7 +13,7 @@ namespace STATIONERY_MANAGE.Controllers
     public class OrdersController : Controller
     {
 
-        Stationery_managementEntities db = new Stationery_managementEntities();
+            Stationery_managementEntities db = new Stationery_managementEntities();
         // GET: Orders
         public ActionResult Index()
         {
@@ -59,24 +59,29 @@ namespace STATIONERY_MANAGE.Controllers
         [HttpPost]
         public JsonResult createorder(List<orders_item> orders_items, order order)
         {
-            order.date_time = DateTime.Now.ToString();
-            order.bill_no = "zxc";
-            order.paid_status = 1;
-            order.user_id = 1;
-            order.company_id = 1;
-            db.orders.Add(order);
-
-            db.SaveChanges();
-
-            foreach (orders_item orders_item in orders_items)
+            if (ModelState.IsValid)
             {
-                orders_item.order_id = order.id;
-                db.orders_item.Add(orders_item);
+                order.date_time = DateTime.Now.ToString();
+                order.bill_no = "zxc";
+                order.paid_status = 1;
+                order.user_id = 1;
+                order.company_id = 1;
+                db.orders.Add(order);
+
                 db.SaveChanges();
+
+                foreach (orders_item orders_item in orders_items)
+                {
+                    orders_item.order_id = order.id;
+                    db.orders_item.Add(orders_item);
+                    db.SaveChanges();
+                }
+
+
+                return Json(new { messege = "OK" });
             }
+            return Json(new { messege = "BAD" });
 
-
-            return Json(new { messege = "OK" });
         }
         public void createOrderItem(List<orders_item> orders_items, int id)
         {

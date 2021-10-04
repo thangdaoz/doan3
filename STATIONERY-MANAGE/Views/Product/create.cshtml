@@ -42,15 +42,15 @@
 
                     
                 <div class="box-body">
-                   
+
 
                     <div class="form-group">
 
                         <label for="product_image">Image</label>
                         <div class="kv-avatar">
-                                <input id="product_image" name="images" type="file">
-                                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
-                            
+                            <input id="product_image" name="images" type="file">
+                            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+
                         </div>
                     </div>
 
@@ -88,35 +88,20 @@
 
 
 
-
-
-
-
                     <div class="form-group">
-                        <label for="category">Category</label>
-                        <select class="form-control select_group" id="category_id" name="category_id">
-
-                            <option value=""></option>
-                            @foreach (var item in ViewBag.dropdownlist1)
-                            {
-                                <option value="@item.id">@item.name</option>
-
-                            }
-
-                        </select>
+                        <label for="category_id">Store</label>
+                        @Html.DropDownList("category_id", String.Empty)
+                        @Html.ValidationMessageFor(model => model.category_id)
                     </div>
 
+
+
+
+
                     <div class="form-group">
-                        <label for="store">Store</label>
-                        <select class="form-control select_group" id="store_id" name="store_id">
-                            <option value=""></option>
-                            @foreach (var item in ViewBag.dropdownlist2)
-                            {
-                                <option value="@item.id">@item.name</option>
-
-                            }
-
-                        </select>
+                        <label for="store_id">Store</label>
+                        @Html.DropDownList("store_id", String.Empty)
+                        @Html.ValidationMessageFor(model => model.store_id)
                     </div>
 
                     <div class="form-group">
@@ -136,10 +121,7 @@
                         </div>
                     
                     }
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        @User.Identity.Name
-                    }
+                 
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->

@@ -41,16 +41,14 @@
                             <div class="form-group">
                                 <label for="gross_amount" class="col-sm-12 control-label">@DateTime.Now</label>
                             </div>
-                            <div class="form-group">
-                                <label for="gross_amount" class="col-sm-12 control-label">Date: <?php echo date('h:i a') ?></label>
-                            </div>
-
+                           
                             <div class="col-md-4 col-xs-12 pull pull-left">
 
                                 <div class="form-group">
                                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Customer Name</label>
                                     <div class="col-sm-7">
-                                        <input type="text" id="customer_name" class="form-control" placeholder = "Enter Customer Name" autocomplete="off">
+                                        <input type="text" id="customer_name" class="form-control" placeholder="Enter Customer Name" autocomplete="off">
+                                        @Html.ValidationMessageFor(model => model.customer_name, "", new { @class = "text-danger" })
 
 
                                     </div>
@@ -60,6 +58,7 @@
                                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Customer Address</label>
                                     <div class="col-sm-7">
                                         <input type="text" id="customer_address" class="form-control" placeholder="Enter Customer Address" autocomplete="off">
+                                        @Html.ValidationMessageFor(model => model.customer_address, "", new { @class = "text-danger" })
 
 
                                     </div>
@@ -69,7 +68,7 @@
                                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Customer Phone</label>
                                     <div class="col-sm-7">
                                         <input type="text" id="customer_phone" class="form-control" placeholder="Enter Customer Phone" autocomplete="off">
-
+                                        @Html.ValidationMessageFor(model => model.customer_phone, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -126,6 +125,7 @@
                                     <label for="gross_amount" class="col-sm-5 control-label">Gross Amount</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" id="gross_amount" name="gross_amount" disabled autocomplete="off" value="">
+                                        @Html.ValidationMessageFor(model => model.gross_amount, "", new { @class = "text-danger" })
                                         <input type="hidden" class="form-control" id="gross_amount_value" name="gross_amount_value" autocomplete="off" value="0">
                                     </div>
                                 </div>
@@ -133,6 +133,7 @@
                                     <label for="service_charge" id="service_chargetext" class="col-sm-5 control-label">S-Charge %</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" id="service_charge" name="service_charge" disabled autocomplete="off">
+                                        @Html.ValidationMessageFor(model => model.service_charge, "", new { @class = "text-danger" })
                                         <input type="hidden" class="form-control" id="service_charge_value" name="service_charge_value" autocomplete="off">
                                     </div>
                                 </div>
@@ -141,12 +142,14 @@
                                     <label for="vat_charge" id="vat_chargetext" class="col-sm-5 control-label">Vat  %</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" id="vat_charge" name="vat_charge" disabled autocomplete="off">
+                                        @Html.ValidationMessageFor(model => model.vat_charge, "", new { @class = "text-danger" })
                                         <input type="hidden" class="form-control" id="vat_charge_value" name="vat_charge_value" autocomplete="off" value="0">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="discount" class="col-sm-5 control-label">Discount</label>
                                     <div class="col-sm-7">
+                                        @Html.ValidationMessageFor(model => model.discount, "", new { @class = "text-danger" })
                                         <input type="text" class="form-control" id="discount" name="discount" placeholder="Discount" value="0" autocomplete="off">
 
                                     </div>
@@ -155,6 +158,7 @@
                                     <label for="net_amount" class="col-sm-5 control-label">Net Amount</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" id="net_amount" name="net_amount" disabled autocomplete="off">
+                                        @Html.ValidationMessageFor(model => model.net_amount, "", new { @class = "text-danger" })
                                         <input type="hidden" class="form-control" id="net_amount_value" name="net_amount_value" autocomplete="off">
                                     </div>
                                 </div>
@@ -267,7 +271,7 @@
 
                 success: function (data) {
                     console.log(data.message);
-                    window.location.href = "Orders/Index";
+                    window.location.href = "/Index";
                 }
             });
         });

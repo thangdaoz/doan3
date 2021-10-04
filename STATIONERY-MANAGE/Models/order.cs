@@ -11,7 +11,8 @@ namespace STATIONERY_MANAGE.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,17 +23,28 @@ namespace STATIONERY_MANAGE.Models
     
         public int id { get; set; }
         public string bill_no { get; set; }
+        [Required]
         public string customer_name { get; set; }
+        [Required]
         public string customer_address { get; set; }
+        [Required]
         public string customer_phone { get; set; }
         public string date_time { get; set; }
+        [Required]
         public double gross_amount { get; set; }
+        [Required]
         public double service_charge_rate { get; set; }
+        [Required]
         public double service_charge { get; set; }
+        [Required]
         public double vat_charge_rate { get; set; }
+        [Required]
         public double vat_charge { get; set; }
+        [Required]
         public double net_amount { get; set; }
+        [Required]
         public double discount { get; set; }
+   
         public int paid_status { get; set; }
         public int user_id { get; set; }
         public int company_id { get; set; }

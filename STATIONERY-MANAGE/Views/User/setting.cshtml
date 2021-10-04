@@ -33,7 +33,7 @@
                         <h3 class="box-title">Update Information</h3>
                     </div>
                     <!-- /.box-header -->
-                    @using (Html.BeginForm("setting ", "User", FormMethod.Post))
+                    @using (Html.BeginForm("setting", "User", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                 <div class="box-body">
@@ -46,43 +46,46 @@
                     <div class="form-group">
                         <label for="email">Email</label>
                         @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @id = "email", @name = "email", @placeholder = "Email", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
 
                     </div>
 
                     <div class="form-group">
                         <label for="fname">First name</label>
                         @Html.EditorFor(model => model.firstname, new { htmlAttributes = new { @class = "form-control", @id = "firstname", @name = "firstname", @placeholder = "First name", @autocomplete = "off" } })
-
+                        @Html.ValidationMessageFor(model => model.firstname, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group">
                         <label for="lname">Last name</label>
-                        @Html.EditorFor(model => model.firstname, new { htmlAttributes = new { @class = "form-control", @id = "lastname", @name = "lastname", @placeholder = "Last name", @autocomplete = "off" } })
-
+                        @Html.EditorFor(model => model.lastname, new { htmlAttributes = new { @class = "form-control", @id = "lastname", @name = "lastname", @placeholder = "Last name", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.lastname, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @id = "phone", @name = "phone", @placeholder = "Phone", @autocomplete = "off" } })
-
+                        @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
                     </div>
 
 
 
                     <div class="form-group">
                         <label for="cpassword">Current password</label>
-                        <input type="password" name="password"  id="password" class="form-control" autocomplete="off" />
-
+                        <input type="password" name="password" id="password" class="form-control" autocomplete="off" />
+                        @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group">
                         <label for="cpassword">Comfirm password</label>
                         <input type="password" name="comfirmpassword" id="comfirmpassword" class="form-control" autocomplete="off" />
+                        @Html.ValidationMessageFor(model => model.comfirmpassword, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group">
                         <label for="cpassword">Confirm new password</label>
                      <input type="password" name="newpassword" id="newpassword" class="form-control" autocomplete="off"   />
+
                     </div>
 
                 </div>

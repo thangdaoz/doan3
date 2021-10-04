@@ -31,12 +31,7 @@
 
                 <div id="messages"></div>
 
-                <div class="alert alert-success alert-dismissible hide" id="success" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="alert alert-error alert-dismissible hide"  id="fail"role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
+              
 
                 <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add Category</button>
                 <br /> <br />
@@ -209,8 +204,8 @@
             GetdatabyId(id);
         });
         $('#editcategory').click(function () {
-            var name = $('#category_name').val();
-            var active = $('#active').val();
+            var name = $('#edit_category_name').val();
+            var active = $('#edit_active').val();
             var id = $('#category_id').val();
             var model = {
                 id: id,
@@ -266,7 +261,7 @@
                             html += "<td valign='top' colspan='1' >inactive</td>";
                         }
 
-                        html += "<td valign='top' colspan='1' ><button type='button' data-id='" + items[i].id + "' id='edit_category' class='btn btn-default'><i class='fa fa-edit'></i></button><button type = 'button' id='remove_category'  data-id='" + items[i].id + "' class='btn btn-default'> <i class='fa fa-remove'></i></button ></td>";
+                        html += "<td valign='top' colspan='1' ><button type='button' data-id='" + items[i].id + "' id='edit_category' class='btn btn-default'><i class='fa fa-edit'></i></td>";
 
                         html += "</tr>";
                     }

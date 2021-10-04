@@ -99,30 +99,14 @@
                     <div class="form-group">
                         <label for="category">Category</label>
 
-                        <select class="form-control select_group" id="category" name="category_id" value=" @Html.ValueFor(model => model.category_id)      ">
-
-                            <option value=""></option>
-                            @foreach (var item in ViewBag.dropdownlist1)
-                            {
-                                <option value="@item.id">@item.name</option>
-
-                            }
-
-                        </select>
+                        @Html.DropDownList("category_id", String.Empty)
+                        @Html.ValidationMessageFor(model => model.category_id)
                     </div>
 
                     <div class="form-group">
                         <label for="store">Store</label>
-                        <select class="form-control select_group" id="store" name="store_id" value=" @Html.ValueFor(model => model.store_id)      ">
-
-                            <option value=""></option>
-                            @foreach (var item in ViewBag.dropdownlist2)
-                            {
-                                <option value="@item.id">@item.name</option>
-
-                            }
-
-                        </select>
+                        @Html.DropDownList("store_id", String.Empty)
+                        @Html.ValidationMessageFor(model => model.store_id)
                     </div>
 
                     <div class="form-group">

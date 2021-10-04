@@ -8,6 +8,8 @@ using STATIONERY_MANAGE.Models;
 using System.Net;
 
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+
 namespace STATIONERY_MANAGE.Controllers
 {
     [Authorize]
@@ -26,17 +28,16 @@ namespace STATIONERY_MANAGE.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            List<category> categorieList = db.categories.ToList();
-            
-            ViewBag.dropdownlist1 = categorieList;
-            List<store> storeList = db.stores.ToList();
-            ViewBag.dropdownlist2 = storeList;
+           
             product product = db.products.Find(id);
+            
             TempData["image"] = product.image;
             if (product == null)
             {
                 return HttpNotFound();
             }
+            categoriesDropDownList(product.category_id);
+            storeDropDownList(product.store_id);
             return View(product);
         }
         [HttpPost]
@@ -73,29 +74,36 @@ namespace STATIONERY_MANAGE.Controllers
         }
         public ActionResult create()
         {
-            List<category> categorieList = db.categories.ToList();
-            ViewBag.dropdownlist1 = categorieList;
-            List<store> storeList = db.stores.ToList();
-            ViewBag.dropdownlist2 = storeList;
+            categoriesDropDownList();
+            storeDropDownList();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult create([Bind(Include = "id , name , sku, price, qty, description, store_id, availability, category_id")] product product , HttpPostedFileBase images)
         {
-            if (ModelState.IsValid)
+            
+            try
             {
-                string path = Server.MapPath("/Content/images/product_image");
-                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-                images.SaveAs(path + "/" + images.FileName);
-                product.image = "Content/images/product_image/" + images.FileName;
+                if (ModelState.IsValid)
+                {
+                    string path = Server.MapPath("/Content/images/product_image");
+                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                    images.SaveAs(path + "/" + images.FileName);
+                    product.image = "Content/images/product_image/" + images.FileName;
 
 
-                db.products.Add(product);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    db.products.Add(product);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-
+            catch (RetryLimitExceededException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+            }
+            categoriesDropDownList(product.category_id);
+            storeDropDownList(product.store_id);
             return View(product);
         }
         
@@ -133,6 +141,20 @@ namespace STATIONERY_MANAGE.Controllers
                 return RedirectToAction("index");
             }
             return View();
+        }
+        private void categoriesDropDownList(object selectedcategories = null)
+        {
+            var categories = from d in db.categories
+                       orderby d.name 
+                       select d;
+            ViewBag.category_id = new SelectList(categories, "id", "name", selectedcategories);
+        }
+        private void storeDropDownList(object selectedstore = null)
+        {
+            var stores = from d in db.stores
+                         orderby d.name
+                         select d;
+            ViewBag.store_id = new SelectList(stores, "id", "name", selectedstore);
         }
 
     }
